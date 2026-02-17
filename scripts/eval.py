@@ -2,7 +2,7 @@
 Medical QA Evaluation Script for API-based Models
 
 Evaluate API-based models (OpenAI, Gemini, etc.) on medical QA benchmarks.
-Supports KorMedMCQA-V (multimodal) and KorMedMCQA-Mixed datasets.
+Supports KorMedMCQA (text-only), KorMedMCQA-V (multimodal), and KorMedMCQA-Mixed datasets.
 
 Usage:
     # Evaluate with OpenAI GPT-5 Mini
@@ -56,7 +56,7 @@ def parse_args():
         "--dataset",
         type=str,
         default="kormedmcqa_v",
-        choices=["kormedmcqa_v", "kormedmcqa_mixed"],
+        choices=["kormedmcqa", "kormedmcqa_v", "kormedmcqa_mixed"],
         help="Dataset to evaluate (default: kormedmcqa_v)",
     )
 
@@ -79,14 +79,14 @@ def parse_args():
         "--api-key",
         type=str,
         default=None,
-        help="API key (default: OPENAI_API_KEY env var)",
+        help="API key (default: auto-detected from model name — GEMINI_API_KEY for Gemini, OPENAI_API_KEY otherwise)",
     )
 
     parser.add_argument(
         "--base-url",
         type=str,
-        default="https://api.openai.com/v1",
-        help="API base URL (default: https://api.openai.com/v1)",
+        default=None,
+        help="API base URL (default: auto-detected from model name)",
     )
 
     parser.add_argument(
@@ -148,14 +148,29 @@ def main():
     dataset = get_dataset(args.dataset, dataset_config)
     dataset_info = dataset.get_dataset_info()
 
-    api_key = args.api_key if args.api_key else os.getenv("OPENAI_API_KEY")
+    is_gemini = "gemini" in args.model_name.lower()
+
+    api_key = args.api_key
+    if not api_key:
+        if is_gemini:
+            api_key = os.getenv("GEMINI_API_KEY")
+        else:
+            api_key = os.getenv("OPENAI_API_KEY")
 
     if not api_key:
+        env_var = "GEMINI_API_KEY" if is_gemini else "OPENAI_API_KEY"
         raise ValueError(
-            "API key not provided. Use --api-key or set OPENAI_API_KEY environment variable."
+            f"API key not provided. Use --api-key or set {env_var} environment variable."
         )
 
-    client = OpenAI(api_key=api_key, base_url=args.base_url)
+    base_url = args.base_url
+    if not base_url:
+        if is_gemini:
+            base_url = "https://generativelanguage.googleapis.com/v1beta/openai/"
+        else:
+            base_url = "https://api.openai.com/v1"
+
+    client = OpenAI(api_key=api_key, base_url=base_url)
 
     timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
 
@@ -178,7 +193,7 @@ def main():
     logger.info(f"Split: {args.split}")
     logger.info(f"Choices: {', '.join(dataset.get_choices())}")
     logger.info(f"Model: {args.model_name}")
-    logger.info(f"Base URL: {args.base_url}")
+    logger.info(f"Base URL: {base_url}")
     logger.info(f"Temperature: {args.temperature}")
     logger.info(f"Max tokens: {args.max_tokens}")
     logger.info("=" * 80)
@@ -206,7 +221,7 @@ def main():
         "split": args.split,
         "temperature": args.temperature,
         "max_tokens": args.max_tokens,
-        "base_url": args.base_url,
+        "base_url": base_url,
         "seed": args.seed,
     }
 
