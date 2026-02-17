@@ -1,0 +1,30 @@
+# MedGemma-1.5-4B-IT (vLLM, OpenAI-Compatible)
+# Multimodal medical model with instruction tuning
+
+metadata:
+  release_date: "2026-01-07"
+  model_size: 4                         # total=4.3B (llm=3.88B, vision=0.42B)
+  context_window: 32768
+  max_output_tokens: 8192
+  modality: "vlm"
+  is_reasoning: false
+  huggingface_url: "https://huggingface.co/google/medgemma-1.5-4b-it"
+
+model:
+  name: google/medgemma-1.5-4b-it
+  client: openai
+  engine: vllm
+  base_url: http://localhost:8000/v1
+  api_key_env: EMPTY
+  is_vlm: true
+
+  params:
+    max_tokens: 8192
+    temperature: 0.0
+
+vllm:
+  gpu_memory_utilization: 0.9
+  visible_devices: "0"
+  port: 8000
+  host: 0.0.0.0
+  max_model_len: 32768

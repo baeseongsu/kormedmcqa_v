@@ -1,0 +1,22 @@
+# Gemini-3.0-Flash-Preview (API)
+# Google Gemini 3.0 Flash preview model
+
+metadata:
+  release_date: null
+  model_size: null
+  context_window: null
+  max_output_tokens: null
+  modality: "vlm"
+  is_reasoning: true
+
+model:
+  name: gemini-3-flash-preview
+  client: openai
+  engine: api
+  base_url: https://generativelanguage.googleapis.com/v1beta/openai/
+  api_key_env: GEMINI_API_KEY
+  is_vlm: true
+
+  params:
+    max_tokens: 8192
+    temperature: 0.7

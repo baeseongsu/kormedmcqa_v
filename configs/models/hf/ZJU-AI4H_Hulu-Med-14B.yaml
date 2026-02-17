@@ -1,0 +1,23 @@
+# Hulu-Med-14B (HF Engine)
+# Transparent Generalist Model for Holistic Medical Vision-Language Understanding
+
+metadata:
+  release_date: "2025-10-08"
+  model_size: 14                        # total=14.4B (llm=13.99B, vision=0.41B)
+  context_window: 32768
+  max_output_tokens: null
+  modality: "vlm"
+  is_reasoning: false
+  huggingface_url: "https://huggingface.co/ZJU-AI4H/Hulu-Med-14B"
+
+model:
+  name: ZJU-AI4H/Hulu-Med-14B
+  client: hf
+  engine: hf
+  is_vlm: true
+  inference_handler: hulumed
+
+  params:
+    max_tokens: 8192
+    temperature: 0.6
+

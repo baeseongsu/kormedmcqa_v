@@ -1,0 +1,35 @@
+# Qwen3-VL-2B-Thinking (vLLM Engine)
+# Vision-Language multimodal model with thinking capability
+
+metadata:
+  release_date: "2025-10-22"
+  model_size: 2                         # total=2.13B (llm=1.79B, vision=0.34B)
+  context_window: 262144
+  max_output_tokens: 40960
+  modality: "vlm"
+  is_reasoning: true
+  huggingface_url: "https://huggingface.co/Qwen/Qwen3-VL-2B-Thinking"
+
+model:
+  name: Qwen/Qwen3-VL-2B-Thinking
+  client: openai
+  engine: vllm
+  base_url: http://localhost:8000/v1
+  api_key_env: EMPTY
+  is_vlm: true
+
+  params:
+    max_tokens: 8192
+    temperature: 1.0
+    top_p: 0.95
+    top_k: 20
+    repetition_penalty: 1.0
+
+vllm:
+  gpu_memory_utilization: 0.9
+  visible_devices: "0"
+  port: 8000
+  host: 0.0.0.0
+  max_model_len: 32768
+  reasoning_parser: deepseek_r1
+  async_scheduling: true

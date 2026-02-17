@@ -1,0 +1,23 @@
+# Kanana-1.5-v-3b-Instruct (HF Engine)
+# Korean-English bilingual multimodal language model
+
+metadata:
+  release_date: "2025-07-24"
+  model_size: 3                         # total=3.67B (llm=3.04B, vision=0.63B)
+  context_window: 32768
+  max_output_tokens: null
+  modality: "vlm"
+  is_reasoning: false
+  huggingface_url: "https://huggingface.co/kakaocorp/kanana-1.5-v-3b-instruct"
+
+model:
+  name: kakaocorp/kanana-1.5-v-3b-instruct
+  client: hf
+  engine: hf
+  is_vlm: true
+  inference_handler: kanana_vl
+
+  params:
+    max_tokens: 8192
+    temperature: 0.0
+

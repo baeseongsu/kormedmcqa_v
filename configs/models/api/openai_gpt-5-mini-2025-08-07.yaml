@@ -1,0 +1,22 @@
+# GPT-5-mini-2025-08-07 (API)
+# OpenAI GPT-5 mini lightweight model
+
+metadata:
+  release_date: "2025-08-07"
+  model_size: null
+  context_window: null
+  max_output_tokens: null
+  modality: "vlm"
+  is_reasoning: true
+
+model:
+  name: gpt-5-mini-2025-08-07
+  client: openai
+  engine: api
+  base_url: https://api.openai.com/v1
+  api_key_env: OPENAI_API_KEY
+  is_vlm: true
+
+  params:
+    max_tokens: 8192
+    temperature: 0.7
