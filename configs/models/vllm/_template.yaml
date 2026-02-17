@@ -1,0 +1,91 @@
+# =============================================================================
+# vLLM Engine Model Configuration Template
+#
+# Use this template for models evaluated via vLLM server.
+# Copy to configs/models/vllm/<model-name>.yaml
+# =============================================================================
+
+# Model Metadata (Common)
+metadata:
+  release_date: "YYYY-MM-DD"              # Model release date from HuggingFace
+  model_size: null                          # Use model name's B number (for VLMs, add breakdown comment: total=XB (llm=XB, vision=XB))
+  context_window: null                    # Context window in tokens (omit if unknown)
+  max_output_tokens: null                # Max output tokens (omit if unknown)
+  modality: "llm"                        # Either "llm" or "vlm"
+  is_reasoning: false                    # true for reasoning/thinking models
+  huggingface_url: ""                    # HuggingFace model card URL
+
+# =============================================================================
+# Model Configuration
+# =============================================================================
+
+model:
+  # Model name
+  # For HuggingFace models: use full path (e.g., "Qwen/Qwen3-VL-4B-Instruct")
+  name: model-name
+
+  # API Client: openai (for vLLM OpenAI-compatible API)
+  client: openai
+
+  # Engine: vllm (indicates vLLM engine)
+  engine: vllm
+
+  # vLLM Server URL
+  base_url: http://localhost:8000/v1     # Fixed value for all models
+
+  # API key environment variable
+  api_key_env: EMPTY                      # Fixed value for all models
+
+  # Whether this is a Vision-Language Model (supports images)
+  # Set to true for models that can process images (e.g., Qwen3-VL, MedGemma)
+  # Set to false for text-only models (e.g., Llama, Gemma-2)
+  is_vlm: false
+
+  # Generation Parameters
+  params:
+    max_tokens: 8192                      # Fixed value for all models
+    temperature: 0.0                      # Research from HuggingFace card
+    # top_p: 0.9
+    # top_k: 50
+    # repetition_penalty: 1.0
+
+# =============================================================================
+# vLLM Server Configuration (vLLM Engine Only)
+# =============================================================================
+
+vllm:
+  # GPU Configuration
+  gpu_memory_utilization: 0.9             # Fixed value for all models
+  visible_devices: "0"                    # Fixed value for all models (or "0,1,2,3" for multi-GPU)
+
+  # Server Settings
+  port: 8000                              # Fixed value for all models
+  host: 0.0.0.0                           # Fixed value for all models
+  max_model_len: 16384                    # Fixed value for all models
+
+  # Model-specific parameters (add if needed):
+  # trust_remote_code: true               # For models requiring custom code
+  # tokenizer_mode: mistral               # For Mistral models
+  # config_format: mistral                # For Mistral models
+  # load_format: mistral                  # For Mistral models
+  # custom_server: omnivlm                # For OmniServe-based models
+  # reasoning_parser: deepseek_r1         # For thinking models
+
+# =============================================================================
+# Usage Examples
+# =============================================================================
+#
+# vLLM Engine Evaluation:
+#
+# uv run python scripts/eval/eval_vllm.py \
+#   --model-name Qwen_Qwen3-VL-4B-Instruct \
+#   --dataset kormedmcqa_v \
+#   --subset doctor
+#
+# With schedule:
+#
+# uv run python scripts/batch/batch_run_vllm.py \
+#   --schedule configs/schedule_vlm_b200_8gpus_vllm.yaml
+#
+# For more details, see: configs/MODEL_CONFIG_STANDARDS_VLLM.md
+#

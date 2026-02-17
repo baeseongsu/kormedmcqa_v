@@ -1,0 +1,36 @@
+# Kimi-VL-A3B-Thinking (vLLM, OpenAI-Compatible)
+# Original version (older than -2506)
+# Vision-Language multimodal model with thinking capability
+
+metadata:
+  release_date: "2025-04-10"
+  model_size: 16                        # total=16.41B (llm=16.01B, vision=0.4B)
+  context_window: 128000
+  max_output_tokens: 32768
+  modality: "vlm"
+  is_reasoning: true
+  huggingface_url: "https://huggingface.co/moonshotai/Kimi-VL-A3B-Thinking"
+
+model:
+  name: moonshotai/Kimi-VL-A3B-Thinking
+  client: openai
+  engine: vllm
+  base_url: http://localhost:8000/v1
+  api_key_env: EMPTY
+  is_vlm: true
+
+  params:
+    max_tokens: 8192
+    temperature: 0.8
+
+vllm:
+  gpu_memory_utilization: 0.9
+  visible_devices: "0"
+  port: 8000
+  host: 0.0.0.0
+  max_model_len: 32768
+  trust_remote_code: true
+  tensor_parallel_size: 1
+  limit_mm_per_prompt:
+    image: 64
+  max_num_batched_tokens: 32768

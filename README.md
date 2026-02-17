@@ -1,5 +1,8 @@
 # KorMedMCQA-V: A Multimodal Benchmark for Evaluating Vision-Language Models on the Korean Medical Licensing Examination
 
+[![Paper](https://img.shields.io/badge/Paper-arXiv:2602.13650-B31B1B.svg)](https://arxiv.org/abs/2602.13650)
+[![Dataset](https://img.shields.io/badge/Dataset-HuggingFace-FFD21E.svg)](https://huggingface.co/datasets/seongsubae/KorMedMCQA-V)
+[![Leaderboard](https://img.shields.io/badge/Leaderboard-Website-blue.svg)](https://kormedmcqa-v.github.io/)
 [![License: MIT](https://img.shields.io/badge/Code-MIT-yellow.svg)](LICENSE)
 [![License: CC BY-NC-SA 4.0](https://img.shields.io/badge/Dataset-CC%20BY--NC--SA%204.0-lightgrey.svg)](https://creativecommons.org/licenses/by-nc-sa/4.0/)
 
@@ -7,16 +10,116 @@ We introduce KorMedMCQA-V, a Korean medical licensing-exam-style multimodal mult
 
 ## Updates
 
-- [Coming Soon] Paper, evaluation code, and dataset will be publicly released.
+- **[2026/02/17]** Paper, evaluation code, dataset, and leaderboard are publicly released.
+  - Paper: [https://arxiv.org/abs/2602.13650](https://arxiv.org/abs/2602.13650)
+  - Code: [https://github.com/baeseongsu/kormedmcqa_v](https://github.com/baeseongsu/kormedmcqa_v)
+  - Dataset: [https://huggingface.co/datasets/seongsubae/KorMedMCQA-V](https://huggingface.co/datasets/seongsubae/KorMedMCQA-V)
+  - Leaderboard: [https://kormedmcqa-v.github.io/](https://kormedmcqa-v.github.io/)
+
+## Leaderboard
+
+Visit our [leaderboard page](https://kormedmcqa-v.github.io/) for detailed evaluation results of over 50 VLMs on KorMedMCQA-V.
+
+## Getting Started
+
+### Installation
+
+```bash
+uv venv --python 3.12
+source .venv/bin/activate  # Windows: .venv\Scripts\activate
+uv pip install -e .
+```
+
+### Evaluation
+
+```bash
+# OpenAI GPT-5 Mini
+python scripts/eval.py \
+    --model-name gpt-5-mini-2025-08-07 \
+    --dataset kormedmcqa_v \
+    --subset doctor \
+    --split test_full \
+    --reasoning-effort medium
+
+# Google Gemini 3 Flash (via OpenAI-compatible endpoint)
+python scripts/eval.py \
+    --model-name gemini-3-flash-preview \
+    --dataset kormedmcqa_v \
+    --subset doctor \
+    --split test_full \
+    --base-url https://generativelanguage.googleapis.com/v1beta/openai/ \
+    --api-key $GEMINI_API_KEY
+
+# Quick test with limited samples
+python scripts/eval.py \
+    --model-name gpt-5-mini-2025-08-07 \
+    --dataset kormedmcqa_v \
+    --subset doctor \
+    --split test_full \
+    --max-samples 10
+```
+
+<details>
+<summary>All CLI arguments</summary>
+
+| Argument | Default | Description |
+|----------|---------|-------------|
+| `--model-name` | (required) | Model name for API |
+| `--dataset` | `kormedmcqa_v` | Dataset: `kormedmcqa_v` or `kormedmcqa_mixed` |
+| `--subset` | `doctor` | Dataset subset |
+| `--split` | `test` | Data split: `test`, `test_full`, `dev`, `train` |
+| `--api-key` | `$OPENAI_API_KEY` | API key |
+| `--base-url` | `https://api.openai.com/v1` | API base URL |
+| `--temperature` | `0.7` | Generation temperature |
+| `--max-tokens` | `8192` | Maximum tokens to generate |
+| `--max-samples` | `None` | Limit samples (for debugging) |
+| `--output-dir` | `./results` | Output directory |
+| `--seed` | `42` | Random seed |
+| `--reasoning-effort` | `None` | Reasoning effort for supported models |
+
+</details>
+
+### Python API
+
+```python
+from openai import OpenAI
+from kormedeval import get_dataset, evaluate_dataset
+
+# Load dataset
+dataset = get_dataset("kormedmcqa_v", {
+    "name": "kormedmcqa_v",
+    "subset": "doctor",
+    "split": "test_full",
+})
+
+# Create client
+client = OpenAI(api_key="your-key")
+
+# Run evaluation
+result = evaluate_dataset(
+    client=client,
+    model_name="gpt-5-mini-2025-08-07",
+    dataset=dataset,
+    max_samples=None,
+    temperature=0.7,
+    max_tokens=8192,
+    is_vlm=True,
+)
+
+print(f"Accuracy: {result['accuracy']:.4f}")
+```
 
 ## Citation
 
-If you use this benchmark in your research, please cite our paper (coming soon):
+If you use this benchmark in your research, please cite our paper:
 
-```
-KorMedMCQA-V: A Multimodal Benchmark for Evaluating Vision-Language Models
-on the Korean Medical Licensing Examination
-Byungjin Choi, Seongsu Bae, Sunjun Kweon and Edward Choi
+```bibtex
+@article{choi2026kormedmcqav,
+  title={KorMedMCQA-V: A Multimodal Benchmark for Evaluating Vision-Language Models on the Korean Medical Licensing Examination},
+  author={Choi, Byungjin and Bae, Seongsu and Kweon, Sunjun and Choi, Edward},
+  journal={arXiv preprint arXiv:2602.13650},
+  year={2026}
+}
 ```
 
 ## License

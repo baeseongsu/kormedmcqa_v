@@ -1,0 +1,23 @@
+# HyperCLOVAX-SEED-Vision-Instruct-3B (HF Engine)
+# Korean-English multimodal language model (LLaVA-based architecture)
+
+metadata:
+  release_date: "2025-04-22"
+  model_size: 3                         # total=3.72B (llm=3.2B, vision=0.52B)
+  context_window: 16384
+  max_output_tokens: null
+  modality: "vlm"
+  is_reasoning: false
+  huggingface_url: "https://huggingface.co/naver-hyperclovax/HyperCLOVAX-SEED-Vision-Instruct-3B"
+
+model:
+  name: naver-hyperclovax/HyperCLOVAX-SEED-Vision-Instruct-3B
+  client: hf
+  engine: hf
+  is_vlm: true
+  inference_handler: hyperclovax
+
+  params:
+    max_tokens: 8192
+    temperature: 0.5
+

@@ -1,0 +1,32 @@
+# InternVL3.5-14B (vLLM, OpenAI-Compatible)
+# Vision-Language multimodal model with Cascade RL training
+
+metadata:
+  release_date: "2025-08-26"
+  model_size: 14                        # total=15.1B (llm=14.8B, vision=0.3B)
+  context_window: 32768
+  max_output_tokens: 16384
+  modality: "vlm"
+  is_reasoning: false
+  huggingface_url: "https://huggingface.co/OpenGVLab/InternVL3_5-14B"
+
+model:
+  name: OpenGVLab/InternVL3_5-14B
+  client: openai
+  engine: vllm
+  base_url: http://localhost:8000/v1
+  api_key_env: EMPTY
+  is_vlm: true
+
+  params:
+    max_tokens: 8192
+    temperature: 0.7
+
+vllm:
+  gpu_memory_utilization: 0.9
+  visible_devices: "0"
+  port: 8000
+  host: 0.0.0.0
+  max_model_len: 32768
+  trust_remote_code: true
+  tensor_parallel_size: 2

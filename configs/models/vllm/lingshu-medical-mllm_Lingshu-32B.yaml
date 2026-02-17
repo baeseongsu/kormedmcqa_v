@@ -1,0 +1,30 @@
+# Lingshu-32B (vLLM, OpenAI-Compatible)
+# Medical domain-specific multimodal language model
+
+metadata:
+  release_date: "2025-06-08"
+  model_size: 32                        # total=33.45B (llm=32.77B, vision=0.68B)
+  context_window: 32768
+  max_output_tokens: null
+  modality: "vlm"
+  is_reasoning: false
+  huggingface_url: "https://huggingface.co/lingshu-medical-mllm/Lingshu-32B"
+
+model:
+  name: lingshu-medical-mllm/Lingshu-32B
+  client: openai
+  engine: vllm
+  base_url: http://localhost:8000/v1
+  api_key_env: EMPTY
+  is_vlm: true
+
+  params:
+    max_tokens: 8192
+    temperature: 0.0
+
+vllm:
+  gpu_memory_utilization: 0.9
+  visible_devices: "0"
+  port: 8000
+  host: 0.0.0.0
+  max_model_len: 32768

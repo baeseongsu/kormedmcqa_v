@@ -1,0 +1,30 @@
+# VARCO-VISION-2.0-1.7B (vLLM, OpenAI-Compatible)
+# Korean-English multimodal language model (LLaVA-OneVision architecture)
+
+metadata:
+  release_date: "2025-07-28"
+  model_size: 1.7                       # total=2.12B (llm=1.7B, vision=0.42B)
+  context_window: 32768
+  max_output_tokens: null
+  modality: "vlm"
+  is_reasoning: false
+  huggingface_url: "https://huggingface.co/NCSOFT/VARCO-VISION-2.0-1.7B"
+
+model:
+  name: NCSOFT/VARCO-VISION-2.0-1.7B
+  client: openai
+  engine: vllm
+  base_url: http://localhost:8000/v1
+  api_key_env: EMPTY
+  is_vlm: true
+
+  params:
+    max_tokens: 8192
+    temperature: 0.0
+
+vllm:
+  gpu_memory_utilization: 0.9
+  visible_devices: "0"
+  port: 8000
+  host: 0.0.0.0
+  max_model_len: 32768

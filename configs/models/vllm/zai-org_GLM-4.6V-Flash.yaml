@@ -1,0 +1,45 @@
+# GLM-4.6V-Flash (vLLM, OpenAI-Compatible)
+# Vision-Language multimodal model (lightweight version)
+
+metadata:
+  release_date: "2025-12-07"
+  model_size: 9                         # total=10B (llm=8.8B, vision=1.2B)
+  context_window: 128000
+  max_output_tokens: 16384
+  modality: "vlm"
+  is_reasoning: true
+  huggingface_url: "https://huggingface.co/zai-org/GLM-4.6V-Flash"
+
+model:
+  name: zai-org/GLM-4.6V-Flash
+  client: openai
+  engine: vllm
+  base_url: http://localhost:8000/v1
+  api_key_env: EMPTY
+  is_vlm: true
+
+  params:
+    max_tokens: 8192
+    temperature: 0.8
+    top_p: 0.6
+    top_k: 2
+    repetition_penalty: 1.1
+
+vllm:
+  gpu_memory_utilization: 0.9
+  visible_devices: "0"
+  port: 8000
+  host: 0.0.0.0
+  max_model_len: 32768
+  trust_remote_code: true
+  tensor_parallel_size: 1
+  reasoning_parser: glm45
+  tool_call_parser: glm45
+  enable_auto_tool_choice: true
+  mm_encoder_tp_mode: data
+  mm_processor_cache_type: shm
+  limit_mm_per_prompt.video: 0
+  mm_processor_kwargs: '{"use_fast": true}'
+  max_num_batched_tokens: 32768
+  download_dir: /home/data_storage/huggingface/hub
+  async_scheduling: true

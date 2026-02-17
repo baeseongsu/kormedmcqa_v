@@ -1,0 +1,33 @@
+# Qwen3-VL-32B-Instruct (vLLM, OpenAI-Compatible)
+# Vision-Language multimodal model with instruction tuning
+
+metadata:
+  release_date: "2025-09-22"
+  model_size: 32                        # total=33.36B (llm=32.8B, vision=0.56B)
+  context_window: 262144
+  max_output_tokens: 40960
+  modality: "vlm"
+  is_reasoning: false
+  huggingface_url: "https://huggingface.co/Qwen/Qwen3-VL-32B-Instruct"
+
+model:
+  name: Qwen/Qwen3-VL-32B-Instruct
+  client: openai
+  engine: vllm
+  base_url: http://localhost:8000/v1
+  api_key_env: EMPTY
+  is_vlm: true
+
+  params:
+    max_tokens: 8192
+    temperature: 1.0
+    top_p: 0.95
+    top_k: 20
+    repetition_penalty: 1.0
+
+vllm:
+  gpu_memory_utilization: 0.9
+  visible_devices: "0"
+  port: 8000
+  host: 0.0.0.0
+  max_model_len: 32768

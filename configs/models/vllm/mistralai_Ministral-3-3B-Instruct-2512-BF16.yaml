@@ -1,0 +1,37 @@
+# Ministral-3-3B-Instruct-2512 (vLLM, OpenAI-Compatible)
+# Vision-Language multimodal model with instruction tuning
+
+metadata:
+  release_date: "2025-12-04"
+  model_size: 3                         # total=4.25B (llm=3.85B, vision=0.4B)
+  context_window: 262144
+  max_output_tokens: null
+  modality: "vlm"
+  is_reasoning: false
+  huggingface_url: "https://huggingface.co/mistralai/Ministral-3-3B-Instruct-2512-BF16"
+
+model:
+  name: mistralai/Ministral-3-3B-Instruct-2512-BF16
+  client: openai
+  engine: vllm
+  base_url: http://localhost:8000/v1
+  api_key_env: EMPTY
+  is_vlm: true
+
+  params:
+    max_tokens: 8192
+    temperature: 0.1
+
+  system_prompt:
+    enabled: true
+    filename: SYSTEM_PROMPT.txt
+
+vllm:
+  gpu_memory_utilization: 0.9
+  visible_devices: "0"
+  port: 8000
+  host: 0.0.0.0
+  max_model_len: 32768
+  tokenizer_mode: mistral
+  config_format: mistral
+  load_format: mistral

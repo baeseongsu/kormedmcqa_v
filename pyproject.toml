@@ -1,0 +1,26 @@
+[project]
+name = "kormedmcqa-v"
+version = "1.0.0"
+description = "Korean Medical Multiple Choice Question Answering with Multimodal Support"
+authors = [
+    {name = "KorMedMCQA-V Team"}
+]
+readme = "README.md"
+requires-python = ">=3.10"
+license = {text = "MIT"}
+dependencies = [
+    "openai>=1.0.0",
+    "datasets>=2.14.0",
+    "tenacity>=8.0.0",
+    "pyyaml>=6.0",
+    "tqdm>=4.65.0",
+    "python-dotenv>=1.0.0",
+    "pillow>=10.0.0",
+]
+
+[tool.hatch.build.targets.wheel]
+packages = ["kormedeval"]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
